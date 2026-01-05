@@ -152,6 +152,10 @@
   grid-template-columns: minmax(0, 1fr) 260px;
   gap: 16px;
   align-items: stretch;
+  --chart-h: 260px;
+  --bar-size: 18px;
+  --category-gap: 16px;
+  --plot-margin: 12px;
 }
 
 .merchantChartArea{
@@ -161,6 +165,7 @@
   border-radius: 16px;
   padding: 6px;
   box-sizing: border-box;
+  height: var(--chart-h);
 }
 
 .merchantLabels{
@@ -170,8 +175,11 @@
   width: 100%;
   display: grid;
   gap: 0;
-  padding: 12px 10px;
+  padding: var(--plot-margin) 10px;
   box-sizing: border-box;
+  height: var(--chart-h);
+  grid-auto-rows: var(--bar-size);
+  row-gap: var(--category-gap);
 }
 
 .merchantLabelRow{

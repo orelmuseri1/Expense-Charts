@@ -71,8 +71,16 @@ function TopMerchantsOutside({ expenses }) {
   }
 
   return (
-    <div className="merchantLayout" style={{ height: CHART_H }}>
-      <div className="merchantChartArea" style={{ height: CHART_H }}>
+    <div
+      className="merchantLayout"
+      style={{
+        "--chart-h": `${CHART_H}px`,
+        "--bar-size": `${BAR_SIZE}px`,
+        "--category-gap": `${CATEGORY_GAP}px`,
+        "--plot-margin": `${PLOT_MARGIN}px`,
+      }}
+    >
+      <div className="merchantChartArea">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
@@ -110,17 +118,7 @@ function TopMerchantsOutside({ expenses }) {
         </ResponsiveContainer>
       </div>
 
-      <div
-        className="merchantLabels"
-        style={{
-          height: CHART_H,
-          gridAutoRows: `${BAR_SIZE}px`,
-          rowGap: `${CATEGORY_GAP}px`,
-          padding: `${PLOT_MARGIN}px 10px`,
-          boxSizing: "border-box",
-        }}
-        aria-hidden="true"
-      >
+      <div className="merchantLabels" aria-hidden="true">
         {data.map((item, idx) => (
           <div key={item.name} className="merchantLabelRow" title={item.name}>
             <span className="merchantLabelRank">{idx + 1}</span>
