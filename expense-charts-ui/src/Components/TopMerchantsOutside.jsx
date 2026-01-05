@@ -65,54 +65,63 @@ export default function TopMerchantsOutside({ expenses }) {
   }
 
   return (
-    <div style={{ height: CHART_H }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ top: 18, right: 42, left: 22, bottom: 18 }}
-          barCategoryGap={10}
-        >
-          <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
-          <XAxis
-            type="number"
-            tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
-            tickFormatter={formatILS}
-          />
-          <YAxis
-            type="category"
-            dataKey="short"
-            width={230}
-            orientation="right"
-            tick={{ fill: "rgba(255,255,255,0.85)", fontSize: 12 }}
-            tickLine={false}
-            axisLine={false}
-          />
-          <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.06)" }}
-            contentStyle={{
-              background: "rgba(10, 12, 20, 0.92)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 12,
-              color: "white",
-            }}
-            formatter={(value, _, item) => [
-              formatILS(value),
-              item?.payload?.name || "בית עסק",
-            ]}
-            labelFormatter={() => ""}
-          />
-          <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
-            <LabelList
-              dataKey="total"
-              position="right"
-              formatter={formatILS}
-              fill="rgba(255,255,255,0.85)"
-              fontSize={12}
+    <div className="merchantLayout" style={{ height: CHART_H }}>
+      <div
+        className="merchantLabels"
+        style={{
+          height: CHART_H,
+          gridTemplateRows: `repeat(${data.length}, ${ROW_H}px)`,
+        }}
+        aria-hidden="true"
+      >
+        {data.map((item) => (
+          <div key={item.name} className="merchantLabelRow" title={item.name}>
+            {item.name}
+          </div>
+        ))}
+      </div>
+
+      <div className="merchantChartArea" style={{ height: CHART_H }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 18, right: 42, left: 18, bottom: 18 }}
+            barCategoryGap={10}
+          >
+            <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
+            <XAxis
+              type="number"
+              tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
+              tickFormatter={formatILS}
             />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <YAxis type="category" dataKey="short" hide />
+            <Tooltip
+              cursor={{ fill: "rgba(255,255,255,0.06)" }}
+              contentStyle={{
+                background: "rgba(10, 12, 20, 0.92)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: 12,
+                color: "white",
+              }}
+              formatter={(value, _, item) => [
+                formatILS(value),
+                item?.payload?.name || "בית עסק",
+              ]}
+              labelFormatter={() => ""}
+            />
+            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
+              <LabelList
+                dataKey="total"
+                position="right"
+                formatter={formatILS}
+                fill="rgba(255,255,255,0.85)"
+                fontSize={12}
+              />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
