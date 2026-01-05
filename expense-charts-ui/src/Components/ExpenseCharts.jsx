@@ -106,13 +106,13 @@ function TopMerchantsOutside({ expenses }) {
               tickFormatter={formatILS}
             />
             <YAxis type="category" dataKey="short" hide />
-          <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.06)" }}
-            contentStyle={tooltipStyle}
-            itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
-            formatter={(value, _, item) => [
-              formatILS(value),
-              item?.payload?.name || "בית עסק",
+            <Tooltip
+              cursor={{ fill: "rgba(255,255,255,0.06)" }}
+              contentStyle={tooltipStyle}
+              itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
+              formatter={(value, _, item) => [
+                formatILS(value),
+                item?.payload?.name || "בית עסק",
               ]}
               labelFormatter={() => ""}
             />
@@ -132,86 +132,6 @@ function TopMerchantsOutside({ expenses }) {
   );
 }
 
-function TypeBreakdownChart({ expenses }) {
-  const data = useMemo(() => {
-    const map = new Map();
-
-    for (const e of expenses || []) {
-      const rawType = (e?.transaction_type || "").trim();
-      const type = rawType || "לא מסווג";
-      if (includesTotal(type)) continue;
-
-      const amt = Number(e?.amount) || 0;
-      if (amt <= 0) continue;
-
-      map.set(type, (map.get(type) || 0) + amt);
-    }
-
-    const arr = Array.from(map.entries())
-      .map(([name, total]) => ({ name, short: truncate(name, 26), total }))
-      .sort((a, b) => b.total - a.total);
-
-    // Top 8 + "אחר"
-    const top = arr.slice(0, 8);
-    const rest = arr.slice(8);
-    const restSum = rest.reduce((s, x) => s + x.total, 0);
-    if (restSum > 0) top.push({ name: "אחר", short: "אחר", total: restSum });
-
-    // Reverse for nicer top-down bars in vertical layout
-    return top.reverse();
-  }, [expenses]);
-
-  const ROW_H = 30;
-  const CHART_H = Math.max(240, data.length * ROW_H + 60);
-
-  if (!data.length) return null;
-
-  return (
-    <div style={{ height: CHART_H }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ top: 18, right: 36, left: 90, bottom: 18 }}
-          barCategoryGap={8}
-        >
-          <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
-          <XAxis
-            type="number"
-            tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
-            tickFormatter={formatILS}
-          />
-          <YAxis
-            type="category"
-            dataKey="short"
-            width={90}
-            tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
-          />
-        <Tooltip
-          cursor={{ fill: "rgba(255,255,255,0.06)" }}
-          contentStyle={tooltipStyle}
-          itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
-          formatter={(value, _, item) => [
-            formatILS(value),
-            item?.payload?.name || "סוג עסקה",
-            ]}
-            labelFormatter={() => ""}
-          />
-          <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
-            <LabelList
-              dataKey="total"
-              position="right"
-              formatter={formatILS}
-              fill="rgba(255,255,255,0.85)"
-              fontSize={12}
-            />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
 export default function ExpenseCharts({ expenses }) {
   return (
     <div className="card">
@@ -219,11 +139,6 @@ export default function ExpenseCharts({ expenses }) {
       <div className="cardContent">
         <div style={{ fontWeight: 800, marginBottom: 10 }}>10 בתי העסק המובילים</div>
         <TopMerchantsOutside expenses={expenses} />
-
-        <div style={{ height: 16 }} />
-
-        <div style={{ fontWeight: 800, marginBottom: 10 }}>חלוקה לפי סוג עסקה</div>
-        <TypeBreakdownChart expenses={expenses} />
 
         <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 10 }}>
           * הסכומים מסוננים כך ששורות/קטגוריות שמכילות “סה״כ” לא נכנסות לניתוח.
