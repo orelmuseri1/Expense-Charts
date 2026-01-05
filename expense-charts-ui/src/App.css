@@ -149,7 +149,7 @@
 /* Merchant labels outside charts */
 .merchantLayout{
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: minmax(0, 1fr) 260px;
   gap: 16px;
   align-items: stretch;
 }
