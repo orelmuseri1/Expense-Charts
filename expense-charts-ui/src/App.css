@@ -148,27 +148,62 @@
 
 /* Merchant labels outside charts */
 .merchantLayout{
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
   align-items: stretch;
 }
 
-.merchantChartArea{ flex: 1; }
+.merchantChartArea{
+  flex: 1;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 6px;
+}
 
 .merchantLabels{
-  width: 260px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
   display: grid;
   gap: 10px;
-  padding: 18px 0;
+  padding: 12px 10px;
 }
 
 .merchantLabelRow{
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 8px;
   font-weight: 700;
   color: var(--text);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 8px 10px;
+  height: 100%;
+}
+
+.merchantLabelRank{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: rgba(124,58,237,0.18);
+  color: white;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.merchantLabelName{
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }

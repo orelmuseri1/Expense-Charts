@@ -42,12 +42,13 @@ function TopMerchantsOutside({ expenses }) {
     return Array.from(map.entries())
       .map(([name, total]) => ({ name, short: truncate(name, 30), total }))
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
-      .reverse();
+      .slice(0, 10);
   }, [expenses]);
 
-  const ROW_H = 32;
-  const CHART_H = Math.max(240, data.length * ROW_H + 40);
+  const ROW_H = 42;
+  const BAR_SIZE = 18;
+  const CHART_H = Math.max(260, data.length * ROW_H + 32);
+  const CATEGORY_GAP = Math.max(ROW_H - BAR_SIZE, 12);
 
   if (!data.length) {
     return (
@@ -67,9 +68,10 @@ function TopMerchantsOutside({ expenses }) {
         }}
         aria-hidden="true"
       >
-        {data.map((item) => (
+        {data.map((item, idx) => (
           <div key={item.name} className="merchantLabelRow" title={item.name}>
-            {item.name}
+            <span className="merchantLabelRank">{idx + 1}</span>
+            <span className="merchantLabelName">{item.name}</span>
           </div>
         ))}
       </div>
@@ -79,8 +81,8 @@ function TopMerchantsOutside({ expenses }) {
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 18, right: 42, left: 18, bottom: 18 }}
-            barCategoryGap={10}
+            margin={{ top: 12, right: 52, left: 10, bottom: 12 }}
+            barCategoryGap={CATEGORY_GAP}
           >
             <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
             <XAxis
