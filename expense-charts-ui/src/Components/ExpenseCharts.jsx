@@ -46,8 +46,8 @@ function TopMerchantsOutside({ expenses }) {
       .reverse();
   }, [expenses]);
 
-  const ROW_H = 30;
-  const CHART_H = Math.max(240, data.length * ROW_H + 60);
+  const ROW_H = 32;
+  const CHART_H = Math.max(240, data.length * ROW_H + 40);
 
   if (!data.length) {
     return (
@@ -58,84 +58,54 @@ function TopMerchantsOutside({ expenses }) {
   }
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "260px 1fr",
-        gap: 14,
-        alignItems: "start",
-      }}
-    >
-      {/* Names (outside chart) */}
-      <div
-        style={{
-          display: "grid",
-          gridAutoRows: `${ROW_H}px`,
-          paddingTop: 18,
-        }}
-      >
-        {data.map((row) => (
-          <div
-            key={row.name}
-            title={row.name}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              color: "rgba(255,255,255,0.82)",
-              fontSize: 12,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              paddingLeft: 10,
+    <div style={{ height: CHART_H }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data}
+          layout="vertical"
+          margin={{ top: 18, right: 42, left: 22, bottom: 18 }}
+          barCategoryGap={10}
+        >
+          <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
+          <XAxis
+            type="number"
+            tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
+            tickFormatter={formatILS}
+          />
+          <YAxis
+            type="category"
+            dataKey="short"
+            width={230}
+            orientation="right"
+            tick={{ fill: "rgba(255,255,255,0.85)", fontSize: 12 }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <Tooltip
+            cursor={{ fill: "rgba(255,255,255,0.06)" }}
+            contentStyle={{
+              background: "rgba(10, 12, 20, 0.92)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 12,
+              color: "white",
             }}
-          >
-            {row.short}
-          </div>
-        ))}
-      </div>
-
-      {/* Bars only */}
-      <div style={{ height: CHART_H }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={data}
-            layout="vertical"
-            margin={{ top: 18, right: 36, left: 0, bottom: 18 }}
-            barCategoryGap={8}
-          >
-            <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
-            <XAxis
-              type="number"
-              tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
-              tickFormatter={formatILS}
+            formatter={(value, _, item) => [
+              formatILS(value),
+              item?.payload?.name || "בית עסק",
+            ]}
+            labelFormatter={() => ""}
+          />
+          <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
+            <LabelList
+              dataKey="total"
+              position="right"
+              formatter={formatILS}
+              fill="rgba(255,255,255,0.85)"
+              fontSize={12}
             />
-            <Tooltip
-              cursor={{ fill: "rgba(255,255,255,0.06)" }}
-              contentStyle={{
-                background: "rgba(10, 12, 20, 0.92)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 12,
-                color: "white",
-              }}
-              formatter={(value, _, item) => [
-                formatILS(value),
-                item?.payload?.name || "בית עסק",
-              ]}
-              labelFormatter={() => ""}
-            />
-            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
-              <LabelList
-                dataKey="total"
-                position="right"
-                formatter={formatILS}
-                fill="rgba(255,255,255,0.85)"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
