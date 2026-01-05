@@ -88,6 +88,64 @@
   background: linear-gradient(135deg, var(--danger), #ef4444);
 }
 
+.emptyState{
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tableHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tableTitle{
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.tableSub{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.searchWrap{
+  position: relative;
+  min-width: 260px;
+  flex: 1;
+  max-width: 360px;
+}
+
+.searchIcon{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+.searchInput{
+  padding-right: 36px;
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border);
+}
+
+.tableFooter{
+  margin-top: 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.text-strong{ font-weight: 700; }
+.mutedText{ color: var(--muted); }
+.tableAmount{ font-weight: 800; color: var(--accent2); }
+
 /* Inputs */
 .input{
   width: 100%;
