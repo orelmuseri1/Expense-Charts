@@ -52,7 +52,7 @@ export default function TopMerchantsOutside({ expenses }) {
       .slice(0, 10); // שמירה על סדר יורד כך שהגבוהים למעלה
   }, [expenses]);
 
-  const BAR_SIZE = 20;
+  const BAR_SIZE = 18;
   const CATEGORY_GAP = 16;
   const PLOT_MARGIN = 12;
   const innerHeight =
@@ -117,7 +117,7 @@ export default function TopMerchantsOutside({ expenses }) {
               ]}
               labelFormatter={() => ""}
             />
-            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
+            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={BAR_SIZE}>
               <LabelList
                 dataKey="total"
                 position="right"
