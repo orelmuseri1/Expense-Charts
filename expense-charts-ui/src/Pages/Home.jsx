@@ -8,7 +8,7 @@ import { analyzeExpensesWithLLM } from "../api/analyzeExpenses";
 
 export default function Home() {
   const analyzeEndpoint =
-    import.meta.env?.VITE_ANALYZE_URL || "http://localhost:3001/analyze";
+    import.meta.env?.VITE_ANALYZE_URL || "http://localhost:11434/api/generate";
 
   const [isUploading, setIsUploading] = useState(false);
   const [expenses, setExpenses] = useState([]);
@@ -240,8 +240,10 @@ export default function Home() {
           <div className="cardContent">
             <div className="tableSub" style={{ marginBottom: 10 }}>
               שלח את פירוט ההוצאות ל-LLM מקומי (ברירת מחדל: {analyzeEndpoint} או ערך
-              <code style={{ marginInline: 4 }}>VITE_ANALYZE_URL</code>) כדי לקבל קטגוריות יעד כגון רכב,
-              קניות, בילויים, חופשות ועוד. ודא שהשירות פועל לפני ההרצה.
+              <code style={{ marginInline: 4 }}>VITE_ANALYZE_URL</code>) שמריץ את המודל
+              <strong style={{ marginInline: 4 }}>LLaMA 3 13B</strong> דרך Ollama. ודא שהשירות פעיל למשל עם
+              <code style={{ marginInline: 4 }}>ollama run llama3:13b</code> לפני ההרצה כדי לקבל קטגוריות יעד כגון
+              רכב, קניות, בילויים וחופשות.
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
               <button
