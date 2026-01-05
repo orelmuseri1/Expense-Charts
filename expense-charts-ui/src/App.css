@@ -64,7 +64,7 @@
 }
 
 .cardContent{
-  padding: 18px;
+  padding: 10px;
 }
 
 /* Buttons */
@@ -88,6 +88,135 @@
   background: linear-gradient(135deg, var(--danger), #ef4444);
 }
 
+.emptyState{
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tableHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tableTitle{
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.tableSub{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.searchWrap{
+  position: relative;
+  min-width: 260px;
+  flex: 1;
+  max-width: 360px;
+}
+
+.searchIcon{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+.searchInput{
+  padding-right: 36px;
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border);
+}
+
+.tableFooter{
+  margin-top: 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.text-strong{ font-weight: 700; }
+.mutedText{ color: var(--muted); }
+.tableAmount{ font-weight: 800; color: var(--accent2); }
+
+/* Merchant labels outside charts */
+.merchantLayout{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 4px;
+  align-items: stretch;
+  --chart-h: 260px;
+  --bar-size: 18px;
+}
+
+.merchantChartArea{
+  flex: 1;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0px;
+  box-sizing: border-box;
+  height: 360px;
+}
+
+.merchantLabels{
+  border-radius: 16px;
+  width: 100%;
+  display: grid;
+  padding: 26px 10px;
+  box-sizing: border-box;
+  height: var(--chart-h);
+  grid-auto-rows: var(--bar-size);
+  row-gap: 10.5px;
+}
+
+.merchantLabelRow{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 0 10px;
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.merchantLabelRank{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: rgba(124,58,237,0.18);
+  color: white;
+  font-weight: 800;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.merchantLabelName{
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Inputs */
 .input{
   width: 100%;
@@ -106,10 +235,12 @@
 table{ width: 100%; border-collapse: collapse; }
 thead{ background: rgba(255,255,255,0.05); }
 th, td{
-  padding: 12px 12px;
+  padding: 10px 12px;
   text-align: right;
   border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.35;
 }
 th{ color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 tbody tr:hover{ background: rgba(255,255,255,0.05); }

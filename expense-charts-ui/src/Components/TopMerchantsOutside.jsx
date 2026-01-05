@@ -4,6 +4,7 @@ import {
   BarChart,
   Bar,
   XAxis,
+  YAxis,
   CartesianGrid,
   Tooltip,
   LabelList,
@@ -16,6 +17,16 @@ const truncate = (s, n = 26) => {
 
 const formatILS = (n) =>
   `₪${Number(n || 0).toLocaleString("he-IL", { maximumFractionDigits: 0 })}`;
+
+const tooltipStyle = {
+  background: "rgba(12, 15, 28, 0.95)",
+  border: "1px solid rgba(255,255,255,0.14)",
+  borderRadius: 12,
+  color: "white",
+  padding: "10px 12px",
+  boxShadow: "0 10px 28px rgba(0,0,0,0.35)",
+  textAlign: "right",
+};
 
 const includesTotal = (text) => {
   const t = String(text || "");
@@ -48,12 +59,15 @@ export default function TopMerchantsOutside({ expenses }) {
         total,
       }))
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
-      .reverse(); // כדי שהגדול יהיה למעלה יפה
+      .slice(0, 10); // שמירה על סדר יורד כך שהגבוהים למעלה
   }, [expenses]);
 
-  const ROW_H = 30;
-  const CHART_H = Math.max(220, data.length * ROW_H + 60);
+  const BAR_SIZE = 18;
+  const CATEGORY_GAP = 10.3;
+  const PLOT_MARGIN = 20;
+  const innerHeight =
+    data.length * BAR_SIZE + Math.max(0, data.length - 1) * CATEGORY_GAP;
+  const CHART_H = Math.max(260, innerHeight + PLOT_MARGIN * 2);
 
   if (!data.length) {
     return (
@@ -65,50 +79,21 @@ export default function TopMerchantsOutside({ expenses }) {
 
   return (
     <div
+      className="merchantLayout"
       style={{
-        display: "grid",
-        gridTemplateColumns: "260px 1fr",
-        gap: 14,
-        alignItems: "start",
+        "--chart-h": `${CHART_H}px`,
+        "--bar-size": `${BAR_SIZE}px`,
+        "--category-gap": `${CATEGORY_GAP}px`,
+        "--plot-margin": `${PLOT_MARGIN}px`,
       }}
     >
-      {/* Names column OUTSIDE chart - 1 row per bar */}
-      <div
-        style={{
-          display: "grid",
-          gridAutoRows: `${ROW_H}px`,
-          paddingTop: 18, // align with chart top
-        }}
-      >
-        {data.map((row) => (
-          <div
-            key={row.name}
-            title={row.name}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              color: "rgba(255,255,255,0.82)",
-              fontSize: 12,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              paddingLeft: 10,
-            }}
-          >
-            {row.short}
-          </div>
-        ))}
-      </div>
-
-      {/* Chart only bars */}
-      <div style={{ height: CHART_H }}>
+      <div className="merchantChartArea">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 18, right: 36, left: 0, bottom: 18 }}
-            barCategoryGap={8}
+            margin={{ top: PLOT_MARGIN, right: 52, left: 10, bottom: PLOT_MARGIN }}
+            barCategoryGap={`${CATEGORY_GAP}px`}
           >
             <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
             <XAxis
@@ -116,21 +101,18 @@ export default function TopMerchantsOutside({ expenses }) {
               tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
               tickFormatter={formatILS}
             />
+            <YAxis type="category" dataKey="short" hide />
             <Tooltip
               cursor={{ fill: "rgba(255,255,255,0.06)" }}
-              contentStyle={{
-                background: "rgba(10, 12, 20, 0.92)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 12,
-                color: "white",
-              }}
+              contentStyle={tooltipStyle}
+              itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
               formatter={(value, _, item) => [
                 formatILS(value),
                 item?.payload?.name || "בית עסק",
               ]}
               labelFormatter={() => ""}
             />
-            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={18}>
+            <Bar dataKey="total" radius={[10, 10, 10, 10]} barSize={BAR_SIZE}>
               <LabelList
                 dataKey="total"
                 position="right"
@@ -141,6 +123,15 @@ export default function TopMerchantsOutside({ expenses }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+      </div>
+
+      <div className="merchantLabels" aria-hidden="true">
+        {data.map((item, idx) => (
+          <div key={item.name} className="merchantLabelRow" title={item.name}>
+            <span className="merchantLabelRank">{idx + 1}</span>
+            <span className="merchantLabelName">{item.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

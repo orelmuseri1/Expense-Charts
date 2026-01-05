@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Upload, FileSpreadsheet, Trash2 } from "lucide-react";
 import * as XLSX from "xlsx";
-import ExpenseCharts from "../components/ExpenseCharts";
-import ExpenseTable from "../components/ExpenseTable";
+import ExpenseCharts from "../Components/ExpenseCharts";
+import ExpenseTable from "../Components/ExpenseTable";
 
 export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
