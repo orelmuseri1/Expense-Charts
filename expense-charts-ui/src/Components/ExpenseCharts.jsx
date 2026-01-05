@@ -45,10 +45,12 @@ function TopMerchantsOutside({ expenses }) {
       .slice(0, 10);
   }, [expenses]);
 
-  const ROW_H = 42;
-  const BAR_SIZE = 18;
-  const CHART_H = Math.max(260, data.length * ROW_H + 32);
-  const CATEGORY_GAP = Math.max(ROW_H - BAR_SIZE, 12);
+  const BAR_SIZE = 20;
+  const CATEGORY_GAP = 16;
+  const PLOT_MARGIN = 12;
+  const innerHeight =
+    data.length * BAR_SIZE + Math.max(0, data.length - 1) * CATEGORY_GAP;
+  const CHART_H = Math.max(260, innerHeight + PLOT_MARGIN * 2);
 
   if (!data.length) {
     return (
@@ -64,7 +66,10 @@ function TopMerchantsOutside({ expenses }) {
         className="merchantLabels"
         style={{
           height: CHART_H,
-          gridTemplateRows: `repeat(${data.length}, ${ROW_H}px)`,
+          gridAutoRows: `${BAR_SIZE}px`,
+          rowGap: `${CATEGORY_GAP}px`,
+          padding: `${PLOT_MARGIN}px 10px`,
+          boxSizing: "border-box",
         }}
         aria-hidden="true"
       >
@@ -81,7 +86,7 @@ function TopMerchantsOutside({ expenses }) {
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 12, right: 52, left: 10, bottom: 12 }}
+            margin={{ top: PLOT_MARGIN, right: 52, left: 10, bottom: PLOT_MARGIN }}
             barCategoryGap={CATEGORY_GAP}
           >
             <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
