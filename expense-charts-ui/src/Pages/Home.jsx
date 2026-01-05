@@ -8,6 +8,7 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [isLoading] = useState(false);
+  const [isAiProcessing, setIsAiProcessing] = useState(false);
   const fileRef = useRef(null);
 
   const normalizeHeader = (h) =>
@@ -129,6 +130,20 @@ export default function Home() {
   const deleteAll = () => setExpenses([]);
   const openFilePicker = () => fileRef.current?.click();
 
+  const handleRunAi = () => {
+    if (isAiProcessing) return;
+
+    const confirmed = window.confirm("להפעיל AI על הקובץ?");
+    if (!confirmed) return;
+
+    setIsAiProcessing(true);
+
+    // Replace this timeout with the real AI processing call.
+    setTimeout(() => {
+      setIsAiProcessing(false);
+    }, 800);
+  };
+
   return (
     <div dir="rtl">
       {/* Upload Section */}
@@ -204,6 +219,21 @@ export default function Home() {
 
       {/* Table */}
       {expenses.length > 0 && <ExpenseTable expenses={expenses} />}
+
+      {expenses.length > 0 && (
+        <div className="card" style={{ marginTop: 16 }}>
+          <div className="cardContent" style={{ textAlign: "center" }}>
+            <button
+              className="btn btnDanger"
+              onClick={handleRunAi}
+              disabled={isAiProcessing}
+              style={{ minWidth: 220 }}
+            >
+              {isAiProcessing ? "מריץ ניתוח AI..." : "להפעיל AI על הקובץ?"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Empty State */}
       {expenses.length === 0 && !isLoading && (
