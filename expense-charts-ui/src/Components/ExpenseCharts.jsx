@@ -56,8 +56,8 @@ function TopMerchantsOutside({ expenses }) {
   }, [expenses]);
 
   const BAR_SIZE = 18;
-  const CATEGORY_GAP = 16;
-  const PLOT_MARGIN = 12;
+  const CATEGORY_GAP = 10.3;
+  const PLOT_MARGIN = 20;
   const innerHeight =
     data.length * BAR_SIZE + Math.max(0, data.length - 1) * CATEGORY_GAP;
   const CHART_H = Math.max(260, innerHeight + PLOT_MARGIN * 2);

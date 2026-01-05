@@ -154,8 +154,8 @@
   align-items: stretch;
   --chart-h: 260px;
   --bar-size: 18px;
-  --category-gap: 16px;
-  --plot-margin: 12px;
+  --category-gap: 10.3px;
+  --plot-margin: 20px;
 }
 
 .merchantChartArea{
