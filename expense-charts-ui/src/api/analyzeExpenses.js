@@ -11,6 +11,12 @@ const TARGET_CATEGORIES = [
   "אחר",
 ];
 
+const ANALYZE_ENDPOINT =
+  import.meta.env?.VITE_ANALYZE_URL || "http://localhost:3001/analyze";
+
+const NETWORK_ERROR_MESSAGE =
+  "החיבור לשירות ה-AI נכשל. ודא שהשרת המקומי רץ ב-" + ANALYZE_ENDPOINT;
+
 const buildPrompt = () =>
   `אתה מסווג הוצאות אישיות לקטגוריות יעד ברורות: ${TARGET_CATEGORIES.join(
     ", "
@@ -60,13 +66,27 @@ export async function analyzeExpensesWithLLM(expenses = []) {
     })),
   };
 
-  const response = await fetch("http://localhost:3001/analyze", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  let response;
+  try {
+    response = await fetch(ANALYZE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    const isAbort = error?.name === "AbortError";
+    throw new Error(
+      isAbort ? `${NETWORK_ERROR_MESSAGE} (חרג מזמן קצוב)` : NETWORK_ERROR_MESSAGE
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     throw new Error("הקריאה לשירות ה-AI נכשלה. ודא שהשרת המקומי פעיל.");

@@ -7,6 +7,9 @@ import AiClassificationResults from "../Components/AiClassificationResults";
 import { analyzeExpensesWithLLM } from "../api/analyzeExpenses";
 
 export default function Home() {
+  const analyzeEndpoint =
+    import.meta.env?.VITE_ANALYZE_URL || "http://localhost:3001/analyze";
+
   const [isUploading, setIsUploading] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [isLoading] = useState(false);
@@ -236,8 +239,9 @@ export default function Home() {
           </div>
           <div className="cardContent">
             <div className="tableSub" style={{ marginBottom: 10 }}>
-              שלח את פירוט ההוצאות ל-LLM מקומי (לדוגמה: http://localhost:3001/analyze) כדי לקבל קטגוריות מועדפות
-              כמו רכב, קניות, בילויים, חופשות ועוד.
+              שלח את פירוט ההוצאות ל-LLM מקומי (ברירת מחדל: {analyzeEndpoint} או ערך
+              <code style={{ marginInline: 4 }}>VITE_ANALYZE_URL</code>) כדי לקבל קטגוריות יעד כגון רכב,
+              קניות, בילויים, חופשות ועוד. ודא שהשירות פועל לפני ההרצה.
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
               <button
