@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
 export default function ExpenseTable({ expenses }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 20;
 
   const filteredExpenses = useMemo(() => {
     const term = searchTerm.toLowerCase();
@@ -15,6 +17,27 @@ export default function ExpenseTable({ expenses }) {
         expense.notes?.toLowerCase().includes(term)
     );
   }, [expenses, searchTerm]);
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredExpenses.length / pageSize)),
+    [filteredExpenses.length]
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, expenses]);
+
+  useEffect(() => {
+    setCurrentPage((prev) => Math.min(prev, totalPages));
+  }, [totalPages]);
+
+  const pagedExpenses = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredExpenses.slice(startIndex, startIndex + pageSize);
+  }, [currentPage, filteredExpenses]);
+
+  const startIndex = filteredExpenses.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const endIndex = Math.min(currentPage * pageSize, filteredExpenses.length);
 
   return (
     <div className="card">
@@ -55,7 +78,7 @@ export default function ExpenseTable({ expenses }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredExpenses.map((expense) => (
+                  {pagedExpenses.map((expense) => (
                     <tr key={expense.id}>
                       <td>{expense.transaction_date}</td>
                       <td className="text-strong">{expense.business_name}</td>
@@ -72,7 +95,35 @@ export default function ExpenseTable({ expenses }) {
             </div>
 
             <div className="tableFooter">
-              מציג {filteredExpenses.length} מתוך {expenses.length} עסקאות
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 12,
+                  flexWrap: "wrap",
+                }}
+              >
+                <button
+                  className="btn"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  style={{ minWidth: 100 }}
+                >
+                  הקודם
+                </button>
+                <div style={{ minWidth: 180, textAlign: "center" }}>
+                  מציג {startIndex}-{endIndex} מתוך {filteredExpenses.length} עסקאות
+                </div>
+                <button
+                  className="btn"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages || filteredExpenses.length === 0}
+                  style={{ minWidth: 100 }}
+                >
+                  הבא
+                </button>
+              </div>
             </div>
           </>
         )}
