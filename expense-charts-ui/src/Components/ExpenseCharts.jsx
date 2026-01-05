@@ -83,6 +83,8 @@ function TopMerchantsOutside({ expenses }) {
           width="100%"
           height={CHART_H}
           minWidth={320}
+          minHeight={CHART_H}
+          style={{ minWidth: 320, minHeight: CHART_H }}
         >
           <BarChart
             data={data}

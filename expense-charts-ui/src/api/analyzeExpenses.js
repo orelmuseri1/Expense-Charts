@@ -18,7 +18,7 @@ const NETWORK_ERROR_MESSAGE =
   "החיבור לשירות ה-AI נכשל. ודא שהשרת המקומי רץ ב-" + ANALYZE_ENDPOINT;
 
 const buildPrompt = () =>
-  `אתה מסווג הוצאות אישיות באמצעות LLaMA 3 13B בקטגוריות יעד ברורות: ${TARGET_CATEGORIES.join(", ")}. החזר JSON בלבד במבנה הבא: {"categories":[{"name":"שם קטגוריה","total":120.5,"count":3}],"transactions":[{"id":"מזהה","transaction_date":"YYYY-MM-DD","business_name":"שם בית העסק","amount":55.9,"category":"קטגוריה"}],"modelNotes":"הסבר קצר"}. התמקד בהגדרות: רכב=דלק/טיפולים, קניות=סופר/חנויות, בילויים=מסעדות/ברים/תרבות, חופשות=טיסות/מלונות, ושיבוץ יתר בהתאם לנ"ל. אל תוסיף טקסט נוסף, רק JSON תקין.`;
+  `אתה מסווג הוצאות אישיות באמצעות LLaMA 3 8B בקטגוריות יעד ברורות: ${TARGET_CATEGORIES.join(", ")}. החזר JSON בלבד במבנה הבא: {"categories":[{"name":"שם קטגוריה","total":120.5,"count":3}],"transactions":[{"id":"מזהה","transaction_date":"YYYY-MM-DD","business_name":"שם בית העסק","amount":55.9,"category":"קטגוריה"}],"modelNotes":"הסבר קצר"}. התמקד בהגדרות: רכב=דלק/טיפולים, קניות=סופר/חנויות, בילויים=מסעדות/ברים/תרבות, חופשות=טיסות/מלונות, ושיבוץ יתר בהתאם לנ"ל. אל תוסיף טקסט נוסף, רק JSON תקין.`;
 
 const tryParseJsonFromText = (text = "") => {
   try {
@@ -78,7 +78,7 @@ export async function analyzeExpensesWithLLM(expenses = []) {
   }));
 
   const generatePayload = {
-    model: "llama3:13b",
+    model: "llama3:8b",
     prompt: `${buildPrompt()}\nהוצאות לדוגמה:\n${JSON.stringify(
       expensesForModel,
       null,
@@ -89,7 +89,7 @@ export async function analyzeExpensesWithLLM(expenses = []) {
   };
 
   const chatPayload = {
-    model: "llama3:13b",
+    model: "llama3:8b",
     messages: [
       { role: "system", content: buildPrompt() },
       {
@@ -105,7 +105,7 @@ export async function analyzeExpensesWithLLM(expenses = []) {
     prompt: buildPrompt(),
     categories: TARGET_CATEGORIES,
     expenses: expensesForModel,
-    model: "llama-3-13b",
+    model: "llama-3-8b",
   };
 
   const payload = ANALYZE_ENDPOINT.includes("/analyze")
@@ -162,7 +162,7 @@ export async function analyzeExpensesWithLLM(expenses = []) {
     const statusInfo = response.status ? ` (סטטוס ${response.status})` : "";
     const endpointHint =
       ANALYZE_ENDPOINT === DEFAULT_OLLAMA_ENDPOINT
-        ? " ודא ש-Ollama פעיל והרצת `ollama run llama3:13b`."
+        ? " ודא ש-Ollama פעיל והרצת `ollama run llama3:8b`."
         : " בדוק את ערך VITE_ANALYZE_URL או שהשירות המקומי מחזיר JSON תקין.";
 
     throw new Error(

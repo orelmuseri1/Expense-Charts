@@ -241,8 +241,8 @@ export default function Home() {
             <div className="tableSub" style={{ marginBottom: 10 }}>
               שלח את פירוט ההוצאות ל-LLM מקומי (ברירת מחדל: {analyzeEndpoint} או ערך
               <code style={{ marginInline: 4 }}>VITE_ANALYZE_URL</code>) שמריץ את המודל
-              <strong style={{ marginInline: 4 }}>LLaMA 3 13B</strong> דרך Ollama. ודא שהשירות פעיל למשל עם
-              <code style={{ marginInline: 4 }}>ollama run llama3:13b</code> לפני ההרצה כדי לקבל קטגוריות יעד כגון
+              <strong style={{ marginInline: 4 }}>LLaMA 3 8B</strong> דרך Ollama. ודא שהשירות פעיל למשל עם
+              <code style={{ marginInline: 4 }}>ollama run llama3:8b</code> לפני ההרצה כדי לקבל קטגוריות יעד כגון
               רכב, קניות, בילויים וחופשות.
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
