@@ -76,8 +76,6 @@ function TopMerchantsOutside({ expenses }) {
       style={{
         "--chart-h": `${CHART_H}px`,
         "--bar-size": `${BAR_SIZE}px`,
-        "--category-gap": `${CATEGORY_GAP}px`,
-        "--plot-margin": `${PLOT_MARGIN}px`,
       }}
     >
       <div className="merchantChartArea">
