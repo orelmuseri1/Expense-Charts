@@ -64,7 +64,7 @@
 }
 
 .cardContent{
-  padding: 18px;
+  padding: 10px;
 }
 
 /* Buttons */
@@ -150,7 +150,7 @@
 .merchantLayout{
   display: grid;
   grid-template-columns: minmax(0, 1fr) 260px;
-  gap: 16px;
+  gap: 4px;
   align-items: stretch;
   --chart-h: 260px;
   --bar-size: 18px;
@@ -161,23 +161,20 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 6px;
+  padding: 0px;
   box-sizing: border-box;
-  height: var(--chart-h);
+  height: 360px;
 }
 
 .merchantLabels{
-  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px solid var(--border);
   border-radius: 16px;
   width: 100%;
   display: grid;
-  gap: 0;
-  padding: 20px 10px;
+  padding: 26px 10px;
   box-sizing: border-box;
   height: var(--chart-h);
   grid-auto-rows: var(--bar-size);
-  row-gap: 10.3px;
+  row-gap: 10.5px;
 }
 
 .merchantLabelRow{
