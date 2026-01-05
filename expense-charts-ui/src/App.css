@@ -277,3 +277,58 @@ tbody tr:hover{ background: rgba(255,255,255,0.05); }
   opacity: 0.6;
   pointer-events: none;
 }
+
+/* AI analysis */
+.aiBadge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(52,211,153,0.1));
+  color: #a7f3d0;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(52,211,153,0.35);
+}
+:root[data-theme="light"] .aiBadge{ color: #065f46; }
+.aiBadge.subtle{
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.aiResults{ margin-top: 16px; }
+.aiResultsHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.aiNotes{
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  max-width: 360px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.aiError{
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.aiSuccess{
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.aiStat{
+  background: linear-gradient(135deg, rgba(52,211,153,0.2), rgba(59,130,246,0.12));
+}
