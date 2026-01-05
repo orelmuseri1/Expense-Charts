@@ -18,6 +18,16 @@ const truncate = (s, n = 26) => {
 const formatILS = (n) =>
   `₪${Number(n || 0).toLocaleString("he-IL", { maximumFractionDigits: 0 })}`;
 
+const tooltipStyle = {
+  background: "rgba(12, 15, 28, 0.95)",
+  border: "1px solid rgba(255,255,255,0.14)",
+  borderRadius: 12,
+  color: "white",
+  padding: "10px 12px",
+  boxShadow: "0 10px 28px rgba(0,0,0,0.35)",
+  textAlign: "right",
+};
+
 const includesTotal = (text) => {
   const t = String(text || "");
   return t.includes('סה"כ') || t.includes("סה״כ") || t.includes("סהכ");
@@ -96,17 +106,13 @@ function TopMerchantsOutside({ expenses }) {
               tickFormatter={formatILS}
             />
             <YAxis type="category" dataKey="short" hide />
-            <Tooltip
-              cursor={{ fill: "rgba(255,255,255,0.06)" }}
-              contentStyle={{
-                background: "rgba(10, 12, 20, 0.92)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 12,
-                color: "white",
-              }}
-              formatter={(value, _, item) => [
-                formatILS(value),
-                item?.payload?.name || "בית עסק",
+          <Tooltip
+            cursor={{ fill: "rgba(255,255,255,0.06)" }}
+            contentStyle={tooltipStyle}
+            itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
+            formatter={(value, _, item) => [
+              formatILS(value),
+              item?.payload?.name || "בית עסק",
               ]}
               labelFormatter={() => ""}
             />
@@ -181,17 +187,13 @@ function TypeBreakdownChart({ expenses }) {
             width={90}
             tick={{ fill: "rgba(255,255,255,0.78)", fontSize: 12 }}
           />
-          <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.06)" }}
-            contentStyle={{
-              background: "rgba(10, 12, 20, 0.92)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 12,
-              color: "white",
-            }}
-            formatter={(value, _, item) => [
-              formatILS(value),
-              item?.payload?.name || "סוג עסקה",
+        <Tooltip
+          cursor={{ fill: "rgba(255,255,255,0.06)" }}
+          contentStyle={tooltipStyle}
+          itemStyle={{ color: "#e2e8f0", fontWeight: 700, padding: 0 }}
+          formatter={(value, _, item) => [
+            formatILS(value),
+            item?.payload?.name || "סוג עסקה",
             ]}
             labelFormatter={() => ""}
           />

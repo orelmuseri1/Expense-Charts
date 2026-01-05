@@ -232,10 +232,12 @@
 table{ width: 100%; border-collapse: collapse; }
 thead{ background: rgba(255,255,255,0.05); }
 th, td{
-  padding: 12px 12px;
+  padding: 10px 12px;
   text-align: right;
   border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.35;
 }
 th{ color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 tbody tr:hover{ background: rgba(255,255,255,0.05); }
