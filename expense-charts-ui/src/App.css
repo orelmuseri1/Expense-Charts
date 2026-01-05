@@ -152,6 +152,8 @@
   grid-template-columns: minmax(0, 1fr) 260px;
   gap: 4px;
   align-items: stretch;
+  width: 100%;
+  min-width: 0;
   --chart-h: 260px;
   --bar-size: 18px;
 }
@@ -163,7 +165,10 @@
   border-radius: 16px;
   padding: 0px;
   box-sizing: border-box;
-  height: 360px;
+  height: var(--chart-h);
+  min-height: 220px;
+  min-width: 0;
+  display: flex;
 }
 
 .merchantLabels{

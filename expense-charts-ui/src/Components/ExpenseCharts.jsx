@@ -79,7 +79,12 @@ function TopMerchantsOutside({ expenses }) {
       }}
     >
       <div className="merchantChartArea">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minHeight={CHART_H}
+          minWidth={320}
+        >
           <BarChart
             data={data}
             layout="vertical"
