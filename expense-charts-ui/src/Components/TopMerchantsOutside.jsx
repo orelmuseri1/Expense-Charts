@@ -85,7 +85,7 @@ export default function TopMerchantsOutside({ expenses }) {
             data={data}
             layout="vertical"
             margin={{ top: PLOT_MARGIN, right: 52, left: 10, bottom: PLOT_MARGIN }}
-            barCategoryGap={CATEGORY_GAP}
+            barCategoryGap={`${CATEGORY_GAP}px`}
           >
             <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
             <XAxis
