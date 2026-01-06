@@ -18,7 +18,7 @@ const NETWORK_ERROR_MESSAGE =
   "החיבור לשירות ה-AI נכשל. ודא שהשרת המקומי רץ ב-" + ANALYZE_ENDPOINT;
 
 const buildPrompt = () =>
-  `אתה מסווג הוצאות אישיות באמצעות LLaMA 3 8B בקטגוריות יעד ברורות: ${TARGET_CATEGORIES.join(", ")}. החזר JSON בלבד במבנה הבא: {"categories":[{"name":"שם קטגוריה","total":120.5,"count":3}],"transactions":[{"id":"מזהה","transaction_date":"YYYY-MM-DD","business_name":"שם בית העסק","amount":55.9,"category":"קטגוריה"}],"modelNotes":"הסבר קצר"}. התמקד בהגדרות: רכב=דלק/טיפולים, קניות=סופר/חנויות, בילויים=מסעדות/ברים/תרבות, חופשות=טיסות/מלונות, ושיבוץ יתר בהתאם לנ"ל. אל תוסיף טקסט נוסף, רק JSON תקין.`;
+  `אתה מסווג הוצאות אישיות באמצעות LLaMA 3 8B בקטגוריות יעד ברורות: ${TARGET_CATEGORIES.join(", ")}. החזר JSON בלבד במבנה הבא: {"categories":[{"name":"שם קטגוריה","total":120.5,"count":3}],"transactions":[{"id":"מזהה","transaction_date":"YYYY-MM-DD","business_name":"שם בית העסק","amount":55.9,"category":"קטגוריה"}],"modelNotes":"תובנות והסבר"}. התמקד בהגדרות: רכב=דלק/טיפולים, קניות=סופר/חנויות, בילויים=מסעדות/ברים/תרבות, חופשות=טיסות/מלונות, ושיבוץ יתר בהתאם לנ"ל. שדה modelNotes חייב לכלול תובנות על דפוסי ההוצאה (איפה נצרך רוב הכסף, חריגים, הזדמנויות לחיסכון) בעברית. אל תוסיף טקסט נוסף, רק JSON תקין.`;
 
 const tryParseJsonFromText = (text = "") => {
   try {
@@ -63,6 +63,28 @@ const normalizeTransactions = (rawItems = []) => {
     transactions,
     categories: Array.from(categoryMap.values()),
   };
+};
+
+const createFallbackNotes = (categories = [], transactions = []) => {
+  const total = transactions.reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+  const average = transactions.length ? total / transactions.length : 0;
+  const sorted = [...categories].sort((a, b) => (b.total || 0) - (a.total || 0));
+  const topTwo = sorted.slice(0, 2);
+
+  const categorySummary =
+    topTwo.length > 0
+      ? `הקטגוריות הבולטות הן ${topTwo
+          .map(
+            (c) => `${c.name} (₪${Number(c.total || 0).toLocaleString("he-IL")})`
+          )
+          .join(", ")}`
+      : "לא זוהתה קטגוריה מובילה";
+
+  return `סה"כ הוצאות ₪${total.toLocaleString("he-IL", { maximumFractionDigits: 2 })} ב-${
+    transactions.length
+  } עסקאות. ${categorySummary}. ממוצע עסקה ₪${average.toLocaleString("he-IL", {
+    maximumFractionDigits: 2,
+  })}.`;
 };
 
 export async function analyzeExpensesWithLLM(expenses = []) {
@@ -188,10 +210,20 @@ export async function analyzeExpensesWithLLM(expenses = []) {
     parsedPayload.transactions || parsedPayload.items || []
   );
 
+  const categoriesForNotes =
+    categoriesSummary.length ? categoriesSummary : normalized.categories;
+  const synthesizedNotes = createFallbackNotes(
+    categoriesForNotes,
+    normalized.transactions
+  );
+
   return {
-    categories: categoriesSummary.length ? categoriesSummary : normalized.categories,
+    categories: categoriesForNotes,
     transactions: normalized.transactions,
     modelNotes:
-      parsedPayload.modelNotes || parsedPayload.notes || responseText || "",
+      parsedPayload.modelNotes ||
+      parsedPayload.notes ||
+      responseText ||
+      synthesizedNotes,
   };
 }

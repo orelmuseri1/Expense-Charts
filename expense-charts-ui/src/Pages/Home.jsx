@@ -243,7 +243,8 @@ export default function Home() {
               <code style={{ marginInline: 4 }}>VITE_ANALYZE_URL</code>) שמריץ את המודל
               <strong style={{ marginInline: 4 }}>LLaMA 3 8B</strong> דרך Ollama. ודא שהשירות פעיל למשל עם
               <code style={{ marginInline: 4 }}>ollama run llama3:8b</code> לפני ההרצה כדי לקבל קטגוריות יעד כגון
-              רכב, קניות, בילויים וחופשות.
+              רכב, קניות, בילויים וחופשות, לצד תובנות טקסטואליות קצרות על היכן אתה
+              מוציא הכי הרבה ומה כדאי לבדוק.
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
               <button

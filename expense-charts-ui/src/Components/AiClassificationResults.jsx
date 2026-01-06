@@ -67,7 +67,12 @@ export default function AiClassificationResults({ result }) {
             הנתונים מבוססים על ניתוח AI מקומי של הקובץ שהעלית
           </div>
         </div>
-        {modelNotes && <div className="aiNotes">{modelNotes}</div>}
+        {modelNotes && (
+          <div className="aiNotes">
+            <strong>תובנות AI: </strong>
+            {modelNotes}
+          </div>
+        )}
       </div>
 
       <CategorySummary categories={categories} />
